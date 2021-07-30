@@ -1,0 +1,36 @@
+version : '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: earnings/php_users
+    container_name: app_user
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app_user
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - shared
+
+  webserver:
+    image: nginx:alpine
+    container_name: webserver_user
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/  
+    ports:
+      - "91:80"
+    networks:
+      - shared  
+networks:
+  shared: 
+    external:
+      name: shared

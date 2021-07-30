@@ -1,0 +1,41 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class ForeignCartTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        //
+        Schema::table('cart_item', function (Blueprint $table) {
+            //
+            $table->foreign('cart_id')->references('id')->on('cart');
+            $table->foreign('product_id')->references('id')->on('product');
+
+        });
+        
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        //
+        Schema::table('cart_item', function (Blueprint $table) {
+            //
+            $table->dropForeign('cart_item_cart_id_foreign');
+            $table->foreign('cart_item_product_id_foreign');
+
+        });
+    }
+}
